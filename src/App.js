@@ -62,12 +62,25 @@ function App() {
     border: '1px solid white',
     color: 'white',
     backgroundColor: 'transparent',
-    marginTop: "80vh",
     borderRadius: '1rem',
     padding: '10px',
     margin: '5px',
+    marginBottom: '80vh',
     cursor: 'pointer',
   };
+
+  const nightLightOnStyle = {
+    border: '1px solid black',
+    opacity: '0.2',
+    color: 'black',
+    backgroundColor: 'transparent',
+    borderRadius: '1rem',
+    padding: '10px',
+    margin: '5px',
+    marginBottom: '80vh',
+    cursor: 'pointer',
+  };
+
 
   const appStyle = {
     display: 'flex',
@@ -78,7 +91,7 @@ function App() {
     left: 0,
     width: '100vw',
     height: '100vh',
-    backgroundColor: nightLight ? 'rgb(250, 222, 106)' : backgroundColor,
+    backgroundColor: nightLight ? 'rgb(254, 250, 234)' : backgroundColor,
     padding: '0',
     margin: '0',
   };
@@ -88,7 +101,7 @@ function App() {
       <button style={buttonStyle} onClick={() => handleSpeedChange(-10)}>Slower</button>
       <button style={buttonStyle} onClick={() => handleSpeedChange(10)}>Faster</button>
       <button style={buttonStyle} onClick={handleIntensityChange}>{intensity}</button>
-      <button style={buttonStyle} onClick={toggleNightLight}>Night Light</button>
+      <button style={ !nightLight ? buttonStyle : nightLightOnStyle} onClick={toggleNightLight}>Night Light</button>
     </div>
   );
 }
