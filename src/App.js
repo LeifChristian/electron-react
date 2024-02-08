@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+// import { ipcRenderer } from 'electron';
 
 function App() {
   const [speed, setSpeed] = useState(100); // Adjust the increment rate for smooth transition
@@ -11,6 +12,10 @@ function App() {
     heavy: [[255, 0, 0], [0, 0, 255], [255, 0, 0]], // Loop back to start for smooth transition
     medium: [[255, 165, 0], [0, 255, 0], [255, 165, 0]],
     light: [[255, 222, 173], [135, 206, 235], [255, 222, 173]],
+  };
+
+  const exitApp = () => {
+    ipcRenderer.send('quit-app');
   };
 
   // Function to interpolate between colors
@@ -63,9 +68,24 @@ function App() {
     color: 'white',
     backgroundColor: 'transparent',
     borderRadius: '1rem',
+    opacity: "0.4",
     padding: '10px',
     margin: '5px',
     marginBottom: '80vh',
+    cursor: 'pointer',
+  };
+
+  const exitButtonStyle = {
+    border: '1px solid white',
+    color: 'white',
+    backgroundColor: 'transparent',
+    position: 'absolute',
+    borderRadius: '1rem',
+    opacity: "0.4",
+    left: "93vw",
+    top: "90vh",
+    fontSize: '2.2rem',
+    padding: "8px",
     cursor: 'pointer',
   };
 
@@ -102,6 +122,9 @@ function App() {
       <button style={buttonStyle} onClick={() => handleSpeedChange(10)}>Faster</button>
       <button style={buttonStyle} onClick={handleIntensityChange}>{intensity}</button>
       <button style={ !nightLight ? buttonStyle : nightLightOnStyle} onClick={toggleNightLight}>Night Light</button>
+      <button style={exitButtonStyle} onClick={() => window.electronAPI.exitApp()} >
+    X
+      </button>
     </div>
   );
 }
