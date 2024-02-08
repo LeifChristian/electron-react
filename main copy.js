@@ -13,15 +13,16 @@ const createWindow = () => {
       });
       
 
-  const startUrl = isDev
-    ? 'http://localhost:3000' // Load directly from the dev server
-    : url.format({
-        pathname: path.join(__dirname, './/index.html'),
-        protocol: 'file:',
-        slashes: true,
-      });
+//   const startUrl = isDev
+//     ? 'http://localhost:3000' // Load directly from the dev server
+//     : url.format({
+//         pathname: path.join(__dirname, './public/index.html'),
+//         protocol: 'file:',
+//         slashes: true,
+//       });
 
-  mainWindow.loadURL(startUrl);
+
+  mainWindow.loadURL('http://localhost:3000');
 
   if (isDev) {
     mainWindow.webContents.openDevTools();

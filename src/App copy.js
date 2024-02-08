@@ -4,37 +4,28 @@ function App() {
   const [speed, setSpeed] = useState(100); // Adjust the increment rate for smooth transition
   const [intensity, setIntensity] = useState('medium');
   const [nightLight, setNightLight] = useState(false);
-  const [colorIndex, setColorIndex] = useState(0); // Used for transitioning through colors
+  const [colorIndex, setColorIndex] = useState(0); // Use for smoothly transitioning through colors
 
-  // Define a color cycle for each intensity level that ends where it starts for smooth looping
-  const colorCycles = {
-    heavy: [[255, 0, 0], [0, 0, 255], [255, 0, 0]], // Loop back to start for smooth transition
-    medium: [[255, 165, 0], [0, 255, 0], [255, 165, 0]],
-    light: [[255, 222, 173], [135, 206, 235], [255, 222, 173]],
+  // Define RGB color ranges for each intensity level
+  const colorRanges = {
+    heavy: [[255, 0, 0], [0, 0, 255]], // Example heavy colors
+    medium: [[255, 165, 0], [0, 255, 0]], // Example medium colors
+    light: [[255, 222, 173], [135, 206, 235]], // Example light colors
   };
 
   // Function to interpolate between colors
-  const interpolateColor = (colorCycle, progress) => {
-    // Determine which two colors to interpolate based on progress
-    const cycleLength = colorCycle.length;
-    const scale = progress * (cycleLength - 1);
-    const firstColorIndex = Math.floor(scale);
-    const secondColorIndex = (firstColorIndex + 1) % cycleLength;
-    const localProgress = scale - firstColorIndex;
-
-    const startColor = colorCycle[firstColorIndex];
-    const endColor = colorCycle[secondColorIndex];
+  const interpolateColor = (colorRange, progress) => {
+    const [startColor, endColor] = colorRange;
     return startColor.map((start, index) => {
       const end = endColor[index];
-      return Math.round(start + (end - start) * localProgress);
+      return Math.round(start + (end - start) * progress);
     });
   };
 
   useEffect(() => {
-    const intervalDuration = 3600 / speed; // Inverse relationship for intuitive control
     const intervalId = setInterval(() => {
       setColorIndex((prevIndex) => (prevIndex + 1) % 360);
-    }, intervalDuration);
+    }, speed);
 
     return () => clearInterval(intervalId);
   }, [speed]);
@@ -53,16 +44,15 @@ function App() {
   };
 
   // Calculate current color
-  const currentColorCycle = colorCycles[intensity];
-  const progress = colorIndex / 360;
-  const [r, g, b] = interpolateColor(currentColorCycle, progress);
+  const currentColorRange = colorRanges[intensity];
+  const progress = (colorIndex / 360) * (nightLight ? 0 : 1);
+  const [r, g, b] = interpolateColor(currentColorRange, progress);
   const backgroundColor = `rgb(${r},${g},${b})`;
 
   const buttonStyle = {
     border: '1px solid white',
     color: 'white',
     backgroundColor: 'transparent',
-    marginTop: "80vh",
     borderRadius: '1rem',
     padding: '10px',
     margin: '5px',
@@ -78,19 +68,20 @@ function App() {
     left: 0,
     width: '100vw',
     height: '100vh',
-    backgroundColor: nightLight ? 'rgb(250, 222, 106)' : backgroundColor,
+    backgroundColor: nightLight ? 'rgb(255, 248, 220)' : backgroundColor,
+    transition: 'background-color 1s ease',
     padding: '0',
     margin: '0',
   };
 
   return (
     <div style={appStyle}>
-      <button style={buttonStyle} onClick={() => handleSpeedChange(-10)}>Slower</button>
-      <button style={buttonStyle} onClick={() => handleSpeedChange(10)}>Faster</button>
+      <button style={buttonStyle} onClick={() => handleSpeedChange(-100)}>+</button>
+      <button style={buttonStyle} onClick={() => handleSpeedChange(100)}>-</button>
       <button style={buttonStyle} onClick={handleIntensityChange}>{intensity}</button>
       <button style={buttonStyle} onClick={toggleNightLight}>Night Light</button>
     </div>
   );
 }
 
-export default App
+export default App;
