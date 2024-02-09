@@ -1,7 +1,7 @@
 const { app, BrowserWindow, Menu } = require('electron');
 const { ipcMain } = require('electron');
 const path = require('path');
-const isDev = false // Add this line
+const isDev = true // Add this line
 
 const createWindow = () => {
     // const mainWindow = new BrowserWindow({

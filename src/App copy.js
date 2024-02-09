@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Slider from 'react-input-slider';
+
 // import { ipcRenderer } from 'electron';
 
 function App() {
@@ -8,8 +8,6 @@ function App() {
   const [nightLight, setNightLight] = useState(false);
   const [colorIndex, setColorIndex] = useState(0); // Used for transitioning through colors
   const [sliderValue, setSliderValue] = useState(0)
-
-  const [state, setState] = useState({ x: 10, y: 10 });
 
   // Define a color cycle for each intensity level that ends where it starts for smooth looping
   const colorCycles = {
@@ -133,27 +131,20 @@ function App() {
 
   const robert = sliderValue;
   
+  const handleSliderChange = (event) => {
+    setSliderValue(event.target.value);
+  };
 
   return (
     <div style={appStyle}>
-        <Slider style={{zIndex: 2000, position: 'absolute', left: '2vw', top: "60vh"}} styles={{
-    track: {
-      backgroundColor: 'lightgray',
-      opacity: 0.7
-    },
-    active: {
-      backgroundColor: 'lightgray',
-      opacity: 0.7
-    },
-    thumb: {
-      width: 20,
-      height: 20
-    },
-    disabled: {
-      opacity: 0.5
-    }
-  }}
-         axis="y" y={state.y} onChange={({ y }) => {setSliderValue(y/100); setState(state => ({ ...state, y }))}} />
+       <input
+      type="range"
+      min="0"
+      max="100"
+      value={sliderValue}
+      onChange={handleSliderChange}
+      style={sliderStyle}
+    />
   <div style={{background: "black", opacity: robert, width: '100vw', height: '100vh', position: "absolute"}}></div>
       <button style={buttonStyle} onClick={() => handleSpeedChange(-10)}>Slower</button>
       <button style={buttonStyle} onClick={() => handleSpeedChange(10)}>Faster</button>
