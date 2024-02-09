@@ -49,6 +49,7 @@ function App() {
   }, [speed]);
 
   const handleSpeedChange = (delta) => {
+  setNightLight(false)
     setSpeed((prevSpeed) => Math.max(20, Math.min(2000, prevSpeed + delta)));
   };
 
@@ -85,13 +86,29 @@ function App() {
     backgroundColor: 'transparent',
     position: 'absolute',
     borderRadius: '1rem',
-    opacity: "0.4",
+    opacity: 0.4,
     left: "93vw",
     top: "90vh",
     fontSize: '2.2rem',
     padding: "8px",
     cursor: 'pointer',
   };
+
+  const nightLightExitButtonStyle = {
+    border: '1px solid black',
+    color: 'black',
+    backgroundColor: 'transparent',
+    position: 'absolute',
+    borderRadius: '1rem',
+    opacity: 0.4,
+    left: "93vw",
+    top: "90vh",
+    fontSize: '2.2rem',
+    padding: "8px",
+    cursor: 'pointer',
+  };
+
+  opacity: sliderValue/5
 
   const nightLightOnStyle = {
     border: '1px solid black',
@@ -154,14 +171,20 @@ function App() {
     }
   }}
          axis="y" y={state.y} onChange={({ y }) => {setSliderValue(y/100); setState(state => ({ ...state, y }))}} />
-  <div style={{background: "black", opacity: robert, width: '100vw', height: '100vh', position: "absolute"}}></div>
-      <button style={buttonStyle} onClick={() => handleSpeedChange(-10)}>Slower</button>
-      <button style={buttonStyle} onClick={() => handleSpeedChange(10)}>Faster</button>
-      <button style={buttonStyle} onClick={handleIntensityChange}>{intensity}</button>
+      <div style={{background: "black", opacity: robert, width: '100vw', height: '100vh', position: "absolute"}}></div>
+      <button style={{...buttonStyle, opacity: nightLight ? 0 : 1}} onClick={() => handleSpeedChange(-40)}>Slower</button>
+<button style={{...buttonStyle, opacity: nightLight ? 0 : 1}} onClick={() => handleSpeedChange(40)}>Faster</button>
+<button style={{...buttonStyle, opacity: nightLight ? 0 : 1}} onClick={handleIntensityChange}>{intensity}</button>
+
       <button style={ !nightLight ? buttonStyle : nightLightOnStyle} onClick={toggleNightLight}>Night Light</button>
-      <button style={exitButtonStyle} onClick={() => window.electronAPI.exitApp()} >
+      <button style={!nightLight ? exitButtonStyle : nightLightExitButtonStyle} onClick={() => window.electronAPI.exitApp()} >
     X
       </button>
+
+      {sliderValue < 100 ?
+      <button style={nightLight ? exitButtonStyle : nightLightExitButtonStyle} onClick={() => window.electronAPI.exitApp()} >
+    X
+      </button> : ''}
 
 
     </div>
