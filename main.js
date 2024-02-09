@@ -1,7 +1,7 @@
 const { app, BrowserWindow, Menu } = require('electron');
 const { ipcMain } = require('electron');
 const path = require('path');
-const isDev = true // Add this line
+const isDev = false // Add this line
 
 const createWindow = () => {
     // const mainWindow = new BrowserWindow({
@@ -27,16 +27,12 @@ const createWindow = () => {
     });
     
 
-  const startUrl = isDev
-    ? 'http://localhost:3000' // Load directly from the dev server
-    : url.format({
-        pathname: path.join(__dirname, './/index.html'),
-        protocol: 'file:',
-        slashes: true,
-      });
-
+    const startUrl = isDev
+    ? 'http://localhost:3000' // Load directly from the dev server in development
+    : `file://${path.join(__dirname, 'build', 'index.html')}`; // Use the build folder in production
+  
   mainWindow.loadURL(startUrl);
-
+  
   if (isDev) {
     // mainWindow.webContents.openDevTools();
   }
